@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Introduction — Vue.js</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+
+
+<div id="editor">
+
+    <input type="password" :value="master" @input="update">
+
+    <p v-for="(name,i) in names">
+        <input :value="name" v-model="names[i]"  :style="checksumStyle(name)">
+        <span v-html=" makePass(master, name) "></span>
+    </p>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/marked@0.3.6"></script>
+<script src="https://unpkg.com/lodash@4.16.0"></script>
+
+<script src="sha3.js"></script>
+<script src="teampass.js"></script>
+<script src="index.js"></script>
+
+</body></html>
