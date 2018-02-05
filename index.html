@@ -9,9 +9,13 @@
 
 <div id="editor">
 
-    <input type="password" placeholder="Master passphrase"
-        value="" @input="update"
-        :style=" checksumStyle(seed) ">
+    <p>
+        <input type="password" placeholder="Master passphrase"
+            value="" @input="update"
+            :style=" checksumStyle(seed) ">
+    </p>
+
+    <hr>
 
     <p v-for="(name,i) in names">
         <input :value="name" v-model="names[i]"
