@@ -7,12 +7,21 @@
     <body>
 
 
-<div id="editor">
+<div id="vue">
 
     <p>
         <input type="password" placeholder="Master passphrase"
             value="" @input="update"
-            :style=" checksumStyle(seed) ">
+            :style=" checksumStyle(passColor && seed) ">
+        <span style="margin: 1em;">
+            Enter a master passphrase. Many passwords will be generated from it.
+        </span>
+    </p>
+    <p>
+        <label>
+            <input type="checkbox" v-model="passColor">
+            <small><i>Colors help to check whether you've made any typos.</i></small>
+        </label>
     </p>
 
     <hr>
