@@ -27,4 +27,6 @@ html, body, #editor {
   
   code {
     color: #f66;
+    font-family: monospace;
+    margin: 1em;
   }

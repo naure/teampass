@@ -1,9 +1,16 @@
+defaultNames = ["admin", "email", "website", ""]
+try {
+	loadedNames = JSON.parse(localStorage.names || defaultNames)
+} catch(err) {
+	loadedNames = defaultNames
+}
+
 var vue = new Vue({
 	el: '#editor',
 
 	data: {
-		master: 'Coucou!',
-		names: ["admin", "email", "website", ""],
+		seed: "",
+		names: loadedNames,
 		customName: "",
 	},
 
@@ -11,12 +18,31 @@ var vue = new Vue({
 	},
 
 	methods: {
-		update: _.debounce(function (e) {
-			this.master = e.target.value
-		}, 100),
+		update: function(e) {
+			this.seed = ""
+			var master = e.target.value
+			this.setSeed(master)
+		},
+		
+		setSeed: _.debounce(function (master) {
+			this.seed = master && makeSeed(master)
+		}, 200),
+
+		getPass: function(name) {
+			return this.seed && makePass(this.seed, name)
+		},
 
 		checksumStyle: function(name) {
-			return {"border-bottom": "10px solid "+ makeColor(name)}
+			var color = name ? makeColor(name) : "#f6f6f6"
+			return {"border-bottom": "10px solid " + color}
+		}
+	},
+
+	watch: {
+		names: function(names) {
+			try {
+				localStorage.names = JSON.stringify(names)
+			} catch(err) {}
 		}
 	}
 })

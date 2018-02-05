@@ -9,12 +9,17 @@
 
 <div id="editor">
 
-    <input type="password" :value="master" @input="update">
+    <input type="password" placeholder="Master passphrase"
+        value="" @input="update"
+        :style=" checksumStyle(seed) ">
 
     <p v-for="(name,i) in names">
-        <input :value="name" v-model="names[i]"  :style="checksumStyle(name)">
-        <span v-html=" makePass(master, name) "></span>
+        <input :value="name" v-model="names[i]"
+            :style="checksumStyle(name)">
+        <code>{{ getPass(name) }}</code>
     </p>
+
+    <button @click=" names.push('') ">+ Add</button>
 
 </div>
 
