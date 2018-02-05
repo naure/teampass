@@ -6,11 +6,12 @@ try {
 }
 
 var vue = new Vue({
-	el: '#editor',
+	el: '#vue',
 
 	data: {
 		seed: "",
 		names: loadedNames,
+		passColor: true,
 		asKey: false,
 	},
 
