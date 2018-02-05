@@ -1,6 +1,6 @@
 defaultNames = ["admin", "email", "website", ""]
 try {
-	loadedNames = JSON.parse(localStorage.names || defaultNames)
+	loadedNames = JSON.parse(localStorage.teampass_names || defaultNames)
 } catch(err) {
 	loadedNames = defaultNames
 }
@@ -45,8 +45,21 @@ var vue = new Vue({
 
 	watch: {
 		names: function(names) {
+
+			// Auto create or delete empty fields
+			var numEmptyAtTheEnd = 0
+			for(var i=names.length-1; i >= 0; i--) {
+				if(!names[i]) numEmptyAtTheEnd++;
+				else break;
+			}
+			if(numEmptyAtTheEnd === 0) {
+				this.names.push("")
+			} else if(numEmptyAtTheEnd >= 2) {
+				this.names.pop()
+			}
+
 			try {
-				localStorage.names = JSON.stringify(names)
+				localStorage.teampass_names = JSON.stringify(this.names)
 			} catch(err) {}
 		}
 	}
