@@ -19,7 +19,15 @@
         <code>{{ getPass(name) }}</code>
     </p>
 
-    <button @click=" names.push('') ">+ Add</button>
+    <p>
+        <button @click=" names.push('') ">+ Add</button>
+    </p>
+    <p>
+        <label>
+            <input type="checkbox" v-model="asKey">
+            As 256 bits hex key
+        </label>
+    </p>
 
 </div>
 

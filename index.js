@@ -11,7 +11,7 @@ var vue = new Vue({
 	data: {
 		seed: "",
 		names: loadedNames,
-		customName: "",
+		asKey: false,
 	},
 
 	computed: {
@@ -29,7 +29,12 @@ var vue = new Vue({
 		}, 200),
 
 		getPass: function(name) {
-			return this.seed && makePass(this.seed, name)
+			if(!this.seed) return undefined;
+			if(this.asKey) {
+				return makeKey(this.seed, name);
+			} else {
+				return makePass(this.seed, name);
+			}
 		},
 
 		checksumStyle: function(name) {

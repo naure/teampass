@@ -69,8 +69,11 @@ function makeSeed(master) {
 }
 
 function makePass(seed, name) {
-    //return seed +" | "+ name
     return printable( sha3_256.array(seed + name) )
+}
+
+function makeKey(seed, name) {
+    return "0x" + sha3_256(seed + name)
 }
 
 if(typeof process !== "undefined") {
