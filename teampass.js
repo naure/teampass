@@ -29,12 +29,11 @@ var CSS_COLOR_NAMES = ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#
 var MAX_COLORS = CSS_COLOR_NAMES.length
 
 function makeCode(s) {
-    return sha3_256.array(s)[0]
+    return sha3_256.array("code" + s)[0]
 }
 
 function makeColor(s) {
-    code = sha3_256.array(s)[0]
-    return CSS_COLOR_NAMES[ code % MAX_COLORS ]
+    return CSS_COLOR_NAMES[ makeCode(s) % MAX_COLORS ]
 }
 
 // 64 chars
@@ -94,7 +93,15 @@ function makePass(seed, name) {
 }
 
 function makeKey(seed, name) {
-    return "0x" + sha3_256(seed + name)
+    return "0x" + sha3_256("hex" + seed + name)
+}
+
+function makePin(seed, name) {
+    var h = sha3_256.array("pin" + seed + name)
+    var digits = _.map(h, function(i){ return i % 10 })
+    var chunks = _.chunk(digits, 6).slice(0, 1)
+    var pins = _.map(chunks, function(chunk){ return chunk.join("") })
+    return pins.join(" ")
 }
 
 function selftest() {
