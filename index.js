@@ -55,6 +55,14 @@ var vue = new Vue({
 			}
 		},
 
+		getHidden: function(name) {
+			if(this.asKey) {
+				return "0x****************************************************************";
+			} else {
+				return "********************";
+			}
+		},
+
 		checksumStyle: function(name) {
 			var color = name ? makeColor(name) : "#f6f6f6"
 			return {"border-bottom": "10px solid " + color}
