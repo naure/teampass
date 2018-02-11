@@ -20,8 +20,8 @@ var vue = new Vue({
 		seed: null,
 		names: loadedNames.concat(""),
 		passColor: true,
-		asKey: false,
 		showPass: false,
+		outputFormat: "password",
 	},
 
 	computed: {},
@@ -55,16 +55,20 @@ var vue = new Vue({
 
 		getPass: function(name) {
 			if(!this.seed) return undefined;
-			if(this.asKey) {
+			if(this.outputFormat == "hex") {
 				return makeKey(this.seed, name);
+			} else if(this.outputFormat == "pin") {
+				return makePin(this.seed, name);
 			} else {
 				return makePass(this.seed, name);
 			}
 		},
 
 		getHidden: function(name) {
-			if(this.asKey) {
+			if(this.outputFormat == "hex") {
 				return "0x****************************************************************";
+			} else if(this.outputFormat == "pin") {
+				return "******";
 			} else {
 				return "********************";
 			}

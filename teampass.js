@@ -97,6 +97,14 @@ function makeKey(seed, name) {
     return "0x" + sha3_256(seed + name)
 }
 
+function makePin(seed, name) {
+    var h = sha3_256.array(seed + name)
+    var digits = _.map(h, function(i){ return i % 10 })
+    var chunks = _.chunk(digits, 6).slice(0, 1)
+    var pins = _.map(chunks, function(chunk){ return chunk.join("") })
+    return pins.join(" ")
+}
+
 function selftest() {
     // Test
     master = "team-pbssword"
