@@ -9,25 +9,41 @@ var vue = new Vue({
 	el: '#vue',
 
 	data: {
-		seed: "",
+		master: "",
+		seed: null,
 		names: loadedNames,
 		passColor: true,
 		asKey: false,
 	},
 
-	computed: {
-	},
+	computed: {},
 
 	methods: {
-		update: function(e) {
-			this.seed = ""
-			var master = e.target.value
-			this.setSeed(master)
-		},
-		
-		setSeed: _.debounce(function (master) {
-			this.seed = master && makeSeed(master)
-		}, 200),
+
+		startHashing: _.debounce(function (master) {
+			var self = this
+
+			function progressCb(next, seed) {
+				console.log("STEP  ", master.length, !!next, seed&&seed.length)
+				if(master !== self.master) {
+					console.log("CANCEL", master.length)
+					return // Stop because the input has changed
+				}
+				if(next) {
+					// Continue after UI is idle
+					Vue.nextTick(function() {
+						setTimeout(next, 1)
+					});
+				} else {
+					// Finished, output result
+					self.seed = seed
+				}
+			}
+
+			console.log("START ", master.length)
+			makeSeedAsync(master, progressCb)
+
+		}, 300),
 
 		getPass: function(name) {
 			if(!this.seed) return undefined;
@@ -45,6 +61,14 @@ var vue = new Vue({
 	},
 
 	watch: {
+
+		master: function() {
+			this.seed = null
+			if(this.master) {
+				this.startHashing(this.master)
+			}
+		},
+
 		names: function(names) {
 
 			// Auto create or delete empty fields

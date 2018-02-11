@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Introduction — Vue.js</title>
+        <title>Teampass</title>
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
@@ -11,7 +11,7 @@
 
     <p>
         <input type="password" placeholder="Master passphrase"
-            value="" @input="update"
+            v-model="master"
             :style=" checksumStyle(passColor && seed) ">
         <span style="margin: 1em;">
             Enter a master passphrase. Many passwords will be generated from it.

@@ -10,21 +10,12 @@ always have a lower, upper, digit, and special character
 */
 
 hashCount = 100000
-
-
+hashPrempt = 10000
 
 log = console.log
 
 if(typeof sha3_256 === "undefined") {
     sha3_256 = require("./sha3").sha3_256
-}
-
-function hash_slow(x) {
-    h = sha3_256.buffer(x)
-    for(var i=2; i < hashCount; i++) {
-        h = sha3_256.buffer(h);
-    }
-    return sha3_256(h)
 }
 
 function toVName(name, version) {
@@ -65,7 +56,36 @@ function validate(pass) {
 }
 
 function makeSeed(master) {
-    return hash_slow(master)
+    h = sha3_256.buffer(master)
+    for(var i=2; i < hashCount; i++) {
+        h = sha3_256.buffer(h);    
+    }
+    return sha3_256(h)
+}
+
+function makeSeedAsync(master, progressCb) {
+    var h = sha3_256.buffer(master)  // First hash, converting to buffer.
+    var i = 2  // Count the first and last hashings.
+    var nextStop = i
+
+    function round() {
+        nextStop += hashPrempt
+        if(nextStop > hashCount) nextStop = hashCount;
+
+        for(; i < nextStop; i++) {
+            h = sha3_256.buffer(h);
+        }
+
+        if(i === hashCount) {
+            // Finished!
+            return progressCb(null, sha3_256(h))  // Last hash, converting to string.
+        }
+
+        // Report progress and wait for the callback to start the next round
+        progressCb(round, null)
+    }
+
+    progressCb(round, null)
 }
 
 function makePass(seed, name) {
@@ -83,7 +103,7 @@ if(typeof process !== "undefined") {
 
     names = ["email", "website"]
     version = 0
-    seed = hash_slow(shared)
+    seed = makeSeed(shared)
 
     for(name of names) {
         vName = toVName(name, version)
