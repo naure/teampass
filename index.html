@@ -27,7 +27,7 @@
     <hr>
 
     <p v-for="(name,i) in names">
-        <input :value="name" v-model="names[i]"
+        <input v-model="names[i]"
             :style="checksumStyle(name)">
         <code>{{ getPass(name) }}</code>
     </p>
