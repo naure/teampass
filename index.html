@@ -29,22 +29,32 @@
     <p v-for="(name,i) in names">
         <input v-model="names[i]"
             :style="checksumStyle(name)">
-        <code>{{ getPass(name) }}</code>
+
+        <span v-if=" seed ">
+            <code>{{ showPass ? getPass(name) : "********************" }}</code>
+
+            <button class="copyable" :data-clipboard-text=" getPass(name) ">
+                <img src="clippy.svg" alt="Copy">
+            </button>
+        </span>
     </p>
 
-    <p>
-        <label>
-            <input type="checkbox" v-model="asKey">
-            As 256 bits hex key
-        </label>
-    </p>
+    <p><label>
+        <input type="checkbox" v-model="showPass">
+        Show passwords
+    </label></p>
+
+    <p><label>
+        <input type="checkbox" v-model="asKey">
+        As 256 bits hex key
+    </label></p>
 
 </div>
-
 
 <script src="vue-2.5.13.js"></script>
 <script src="sha3.js"></script>
 <script src="lodash-4.16.0.js"></script>
+<script src="clipboard-1.7.1.js"></script>
 
 <script src="teampass.js"></script>
 <script src="index.js"></script>

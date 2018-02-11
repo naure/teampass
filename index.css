@@ -20,6 +20,13 @@ html, body {
   
   code {
     color: #f66;
-    font-family: monospace;
+    font-family: 'Monaco', courier, monospace;
     margin: 1em;
+  }
+
+  .copyable {
+    vertical-align: middle;
+  }
+  .copyable img {
+    height: 2em;
   }

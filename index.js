@@ -14,6 +14,7 @@ var vue = new Vue({
 		names: loadedNames,
 		passColor: true,
 		asKey: false,
+		showPass: false,
 	},
 
 	computed: {},
@@ -58,6 +59,10 @@ var vue = new Vue({
 			var color = name ? makeColor(name) : "#f6f6f6"
 			return {"border-bottom": "10px solid " + color}
 		}
+	},
+
+	mounted: function() {
+		new Clipboard('.copyable');
 	},
 
 	watch: {
