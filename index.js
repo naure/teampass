@@ -1,4 +1,4 @@
-defaultNames = ["admin", "email", "website", ""]
+defaultNames = ["wifi", "website", "support", ""]
 try {
 	loadedNames = JSON.parse(localStorage.teampass_names || defaultNames)
 } catch(err) {
