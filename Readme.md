@@ -11,7 +11,7 @@ For passwords you might need on a new computer.
 No storage, no cloud sync.
 
 * Small teams sharing accounts. 
-Many services are used with a single account.
+Many services are used with a single account, and people just copy passwords around in chats, emails, or documents. With teampass, you share a team password in person once, and have all other passwords generated.
 
 Just a single password to remember.
 Always available on the web, or as a static page to download.
@@ -20,6 +20,6 @@ Always available on the web, or as a static page to download.
 
 * Pick a master password.
 
-* Use the different passwords for different accounts.
+* Use the different generated passwords for different accounts.
 
 Need a different group of people? Just decide on another master passphrase with that group.
