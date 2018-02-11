@@ -3,6 +3,7 @@
     <head>
         <title>Teampass</title>
         <link rel="stylesheet" href="index.css">
+        <link href="fontawesome.css" rel="stylesheet">
     </head>
     <body>
 
@@ -10,25 +11,26 @@
 <div id="vue">
 
     <p>
-        <input type="password" placeholder="Master passphrase"
-            v-model="master"
-            :style=" checksumStyle(passColor && seed) ">
+        <input type="password" placeholder="Master passphrase" autofocus
+            v-model="master">
+        <i :class=" checksumPass() " title="Remember the icon for next time, to check that you typed the password correctly."></i>
+
         <span style="margin: 1em;">
-            Enter a master passphrase. Many passwords will be generated from it.
+            Enter a master passphrase.
         </span>
     </p>
-    <p>
-        <label>
-            <input type="checkbox" v-model="passColor">
-            <small><i>Colors help to check whether you've made any typos.</i></small>
-        </label>
-    </p>
+    <p>Many passwords will be generated below.</p>
+    <p><small><i>Tip: Remember the icon for next time, to check that you typed the password correctly.</i></small></p>
 
     <hr>
 
+    <!-- <span v-for="icon in icons">
+        <i class="fas" :class=" 'fa-'+icon "></i>
+    </span> -->
+
     <p v-for="(name,i) in names">
-        <input v-model="names[i]"
-            :style="checksumStyle(name)">
+        <input v-model="names[i]">
+            <i :class=" checksumName(name) " title="Remember this icon to check that you typed the name correctly."></i>
 
         <span v-if=" seed " v-cloak>
             <code>{{ showPass ? getPass(name) : getHidden() }}</code>

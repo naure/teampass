@@ -5,6 +5,13 @@ try {
 	loadedNames = defaultNames
 }
 
+var icons = [
+	"bicycle", "bus", "space-shuttle", "paper-plane", "shower",
+	"birthday-cake", "chess", "coffee", "futbol", "tree",
+	"fire-extinguisher", "bath", "gamepad", "music", "umbrella",
+	"gift", "glass-martini", "anchor", "balance-scale", "leaf",
+]
+
 var vue = new Vue({
 	el: '#vue',
 
@@ -66,6 +73,21 @@ var vue = new Vue({
 		checksumStyle: function(name) {
 			var color = name ? makeColor(name) : "#f6f6f6"
 			return {"border-bottom": "10px solid " + color}
+		},
+
+		checksumPass: function() {
+			return (this.master && !this.seed) ?
+				"fas fa-spinner fa-spin" :
+				this.checksumName(this.seed);
+		},
+
+		checksumName: function(name) {
+			if(!name) {
+				var icon = "keyboard"
+			} else {
+				var icon = icons[ makeCode(name) % icons.length ]
+			}
+			return "fas fa-" + icon
 		}
 	},
 

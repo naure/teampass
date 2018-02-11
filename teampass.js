@@ -28,6 +28,10 @@ function toVName(name, version) {
 var CSS_COLOR_NAMES = ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b"];
 var MAX_COLORS = CSS_COLOR_NAMES.length
 
+function makeCode(s) {
+    return sha3_256.array(s)[0]
+}
+
 function makeColor(s) {
     code = sha3_256.array(s)[0]
     return CSS_COLOR_NAMES[ code % MAX_COLORS ]
