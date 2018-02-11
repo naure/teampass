@@ -1,9 +1,20 @@
-defaultNames = ["wifi", "website", "support"]
+
+// Prepare password names
 try {
-	loadedNames = JSON.parse(localStorage.teampass_names || defaultNames)
+	// Names from storage
+	var initNames = JSON.parse(localStorage.teampass_names)
 } catch(err) {
-	loadedNames = defaultNames
+	// Default names
+	var initNames = ["wifi", "website", "support"]
 }
+// Names from URL
+if(location.hash.startsWith("#names=")) {
+	var urlNames = location.hash.substr("#names=".length).split(",")
+	initNames = initNames.concat(urlNames)
+}
+// Deduplicate names
+initNames = _.uniq(initNames)
+
 
 var icons = [
 	"bicycle", "bus", "space-shuttle", "paper-plane", "shower",
@@ -18,7 +29,7 @@ var vue = new Vue({
 	data: {
 		master: "",
 		seed: null,
-		names: loadedNames.concat(""),
+		names: initNames,
 		passColor: true,
 		asKey: false,
 		showPass: false,
@@ -88,28 +99,13 @@ var vue = new Vue({
 				var icon = icons[ makeCode(name) % icons.length ]
 			}
 			return "fas fa-" + icon
-		}
-	},
-
-	mounted: function() {
-		new Clipboard('.copyable');
-	},
-
-	watch: {
-
-		master: function() {
-			this.seed = null
-			if(this.master) {
-				this.startHashing(this.master)
-			}
 		},
 
-		names: function(names) {
-
+		updateNames: function() {
 			// Auto create or delete empty fields
 			var numEmptyAtTheEnd = 0
-			for(var i=names.length-1; i >= 0; i--) {
-				if(!names[i]) numEmptyAtTheEnd++;
+			for(var i=this.names.length-1; i >= 0; i--) {
+				if(!this.names[i]) numEmptyAtTheEnd++;
 				else break;
 			}
 			if(numEmptyAtTheEnd === 0) {
@@ -122,6 +118,31 @@ var vue = new Vue({
 				var toStore = _.compact(this.names)
 				localStorage.teampass_names = JSON.stringify(toStore)
 			} catch(err) {}
+		},
+
+		shareUrl: function() {
+			// To URL
+			location.hash = "names=" + this.names.join(",")
+		}
+	},
+
+	mounted: function() {
+		new Clipboard('.copyable');
+
+		this.updateNames();
+	},
+
+	watch: {
+
+		master: function() {
+			this.seed = null
+			if(this.master) {
+				this.startHashing(this.master)
+			}
+		},
+
+		names: function(names) {
+			this.updateNames()
 		}
 	}
 })
