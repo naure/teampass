@@ -1,4 +1,4 @@
-defaultNames = ["wifi", "website", "support", ""]
+defaultNames = ["wifi", "website", "support"]
 try {
 	loadedNames = JSON.parse(localStorage.teampass_names || defaultNames)
 } catch(err) {
@@ -18,7 +18,7 @@ var vue = new Vue({
 	data: {
 		master: "",
 		seed: null,
-		names: loadedNames,
+		names: loadedNames.concat(""),
 		passColor: true,
 		asKey: false,
 		showPass: false,
@@ -119,7 +119,8 @@ var vue = new Vue({
 			}
 
 			try {
-				localStorage.teampass_names = JSON.stringify(this.names)
+				var toStore = _.compact(this.names)
+				localStorage.teampass_names = JSON.stringify(toStore)
 			} catch(err) {}
 		}
 	}

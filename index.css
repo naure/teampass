@@ -26,9 +26,7 @@ html, body {
 
   .copyable {
     vertical-align: middle;
-  }
-  .copyable img {
-    height: 2em;
+    font-size: large;
   }
 
   [v-cloak] {
