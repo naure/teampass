@@ -29,10 +29,7 @@ var CSS_COLOR_NAMES = ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#
 var MAX_COLORS = CSS_COLOR_NAMES.length
 
 function makeColor(s) {
-    code = 0
-    for(var i=0; i<s.length; i++) {
-        code += s.charCodeAt(i) * (100+i)
-    }
+    code = sha3_256.array(s)[0]
     return CSS_COLOR_NAMES[ code % MAX_COLORS ]
 }
 
