@@ -78,11 +78,11 @@ function makeSeedAsync(master, progressCb) {
 
         if(i === hashCount) {
             // Finished!
-            return progressCb(null, sha3_256(h))  // Last hash, converting to string.
+            progressCb(null, sha3_256(h))  // Last hash, converting to string.
+        } else {
+            // Report progress and wait for the callback to start the next round
+            progressCb(round, null)
         }
-
-        // Report progress and wait for the callback to start the next round
-        progressCb(round, null)
     }
 
     progressCb(round, null)
@@ -96,18 +96,31 @@ function makeKey(seed, name) {
     return "0x" + sha3_256(seed + name)
 }
 
-if(typeof process !== "undefined") {
+function selftest() {
     // Test
-    shared = "team-pbssword"
-    console.log("Color:", makeColor(shared))
+    master = "team-pbssword"
+    console.log("Master:", master)
+    console.log("Color:", makeColor(master))
 
     names = ["email", "website"]
     version = 0
-    seed = makeSeed(shared)
 
-    for(name of names) {
-        vName = toVName(name, version)
-        pass = makePass(seed, vName)
-        console.log(vName, "\t", pass)
+    function cb(next, seed) {
+        if(next) return next();
+
+        for(name of names) {
+            vName = toVName(name, version)
+            pass = makePass(seed, vName)
+            console.log(vName, "\t", pass)
+        }
     }
+
+    // Sync
+    cb(null, makeSeed(master))
+    // Async
+    makeSeedAsync(master, cb)
+}
+
+if(typeof process !== "undefined") {
+    selftest()
 }
