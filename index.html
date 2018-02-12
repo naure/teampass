@@ -18,15 +18,14 @@
             v-model="master">
         <i :class=" checksumPass() " title="Remember the icon for next time, to check that you typed the password correctly."></i>
     </p>
+    <br/>
     <p>Many passwords will be generated below.</p>
     <p><small><i>Tip: Remember the icons. They help you to catch typos and misunderstandings.</i></small></p>
 
-    <hr>
+    <br/>
     <h3>Generated Passwords</h3>
 
-    <!-- <span v-for="icon in icons">
-        <i class="fas" :class=" 'fa-'+icon "></i>
-    </span> -->
+    <h5>Purposes</h5>
 
     <p v-for="(name,i) in names">
         <input v-model="names[i]" placeholder="New...">
@@ -41,7 +40,7 @@
         </span>
     </p>
 
-    <hr>
+    <br/>
 
     <p><label>
         <input type="checkbox" v-model="showPass">
@@ -89,5 +88,10 @@
 
 <script src="teampass.js"></script>
 <script src="index.js"></script>
+
+<!-- Show available icons.
+<span v-for="icon in icons">
+    <i class="fas" :class=" 'fa-'+icon "></i>
+</span> -->
 
 </body></html>

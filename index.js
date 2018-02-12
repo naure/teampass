@@ -95,7 +95,7 @@ var vue = new Vue({
 
 		checksumPass: function() {
 			return (this.master && !this.seed) ?
-				"fas fa-fw fa-spinner fa-spin" :
+				"fas fa-fw fa-cog fa-spin" :
 				this.checksumName(this.seed);
 		},
 
