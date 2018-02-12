@@ -36,15 +36,17 @@ function makeColor(s) {
     return CSS_COLOR_NAMES[ makeCode(s) % MAX_COLORS ]
 }
 
-// 64 chars
+// 64 characters. 6 bits/char.
 CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-'
 
+/** Passwords of 18 characters, or 108 bits. Add "+1" to pass silly password rules. */
 function printable(bytes) {
     s = ""
-    for(b of bytes.slice(0, 20)) {
+    for(b of bytes.slice(0, 18)) {
         char = CHARS[ b % CHARS.length ]
         s += char
     }
+    s += "+1"
     return s
 }
 
@@ -56,7 +58,7 @@ function validate(pass) {
 }
 
 function makeSeed(master) {
-    h = sha3_256.buffer(master)
+    h = sha3_256.buffer("teampass" + master)
     for(var i=2; i < hashCount; i++) {
         h = sha3_256.buffer(h);    
     }
@@ -64,7 +66,7 @@ function makeSeed(master) {
 }
 
 function makeSeedAsync(master, progressCb) {
-    var h = sha3_256.buffer(master)  // First hash, converting to buffer.
+    var h = sha3_256.buffer("teampass" + master)  // First hash, converting to buffer.
     var i = 2  // Count the first and last hashings.
     var nextStop = i
 
