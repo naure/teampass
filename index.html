@@ -8,7 +8,7 @@
     <body>
 
 
-<div id="vue">
+<div id="vue" v-cloak>
 
     <p>
         <input type="password" placeholder="Master passphrase" autofocus
@@ -32,11 +32,11 @@
         <input v-model="names[i]">
             <i :class=" checksumName(name) " title="Remember this icon to check that you typed the name correctly."></i>
 
-        <span v-if=" seed " v-cloak>
+        <span v-if=" seed ">
             <code>{{ showPass ? getPass(name) : getHidden() }}</code>
 
             <button class="copyable" :data-clipboard-text=" getPass(name) ">
-                <i class="fas fa-clipboard"></i>
+                <i class="fas fa-fw fa-clipboard"></i>
             </button>
         </span>
     </p>
@@ -57,6 +57,22 @@
     <p><label>
         <input type="radio" v-model="outputFormat" value="hex">
         As 256 bits hex keys
+    </label></p>
+
+
+    <div v-if=" settingsInUrl " style="
+        position: fixed;
+        top: 0.5em;
+        left: 15em;
+    ">
+        <i class="fas fa-fw fa-upload fa-3x"></i>
+        Share this URL
+    </div>
+
+    <p><label>
+        <input type="checkbox" v-model=" settingsInUrl ">
+        <i class="fas fa-fw fa-upload"></i>
+        Save settings as a URL
     </label></p>
 
 </div>

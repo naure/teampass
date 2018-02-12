@@ -33,6 +33,7 @@ var vue = new Vue({
 		passColor: true,
 		showPass: false,
 		outputFormat: "password",
+		settingsInUrl: false,
 	},
 
 	computed: {},
@@ -92,7 +93,7 @@ var vue = new Vue({
 
 		checksumPass: function() {
 			return (this.master && !this.seed) ?
-				"fas fa-spinner fa-spin" :
+				"fas fa-fw fa-spinner fa-spin" :
 				this.checksumName(this.seed);
 		},
 
@@ -102,7 +103,7 @@ var vue = new Vue({
 			} else {
 				var icon = icons[ makeCode(name) % icons.length ]
 			}
-			return "fas fa-" + icon
+			return "fas fa-fw fa-" + icon
 		},
 
 		updateNames: function() {
@@ -124,7 +125,9 @@ var vue = new Vue({
 			} catch(err) {}
 		},
 
-		shareUrl: function() {
+		updateUrl: function() {
+			if(!this.settingsInUrl) return;
+
 			// To URL
 			location.hash = "names=" + this.names.join(",")
 		}
@@ -147,6 +150,11 @@ var vue = new Vue({
 
 		names: function(names) {
 			this.updateNames()
-		}
+			this.updateUrl()
+		},
+
+		settingsInUrl: function() {
+			this.updateUrl()
+		},
 	}
 })
