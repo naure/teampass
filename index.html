@@ -10,26 +10,26 @@
 
 <div id="vue" v-cloak>
 
+    <h3>Master Passphrase</h3>
+
     <p>
-        <input type="password" placeholder="Master passphrase" autofocus
+        <input type="password" placeholder="Enter a passphrase..."
+            style="width: 24em;" autofocus
             v-model="master">
         <i :class=" checksumPass() " title="Remember the icon for next time, to check that you typed the password correctly."></i>
-
-        <span style="margin: 1em;">
-            Enter a master passphrase.
-        </span>
     </p>
     <p>Many passwords will be generated below.</p>
-    <p><small><i>Tip: Remember the icon for next time, to check that you typed the password correctly.</i></small></p>
+    <p><small><i>Tip: Remember the icons. They help you to catch typos and misunderstandings.</i></small></p>
 
     <hr>
+    <h3>Generated Passwords</h3>
 
     <!-- <span v-for="icon in icons">
         <i class="fas" :class=" 'fa-'+icon "></i>
     </span> -->
 
     <p v-for="(name,i) in names">
-        <input v-model="names[i]">
+        <input v-model="names[i]" placeholder="New...">
             <i :class=" checksumName(name) " title="Remember this icon to check that you typed the name correctly."></i>
 
         <span v-if=" seed ">
@@ -40,6 +40,8 @@
             </button>
         </span>
     </p>
+
+    <hr>
 
     <p><label>
         <input type="checkbox" v-model="showPass">
@@ -66,10 +68,10 @@
 
     <!-- Floating arrow pointing at the address bar. -->
     <div v-if=" settingsInUrl "
-        style="position: fixed; top: 0.5em; left: 15em;"
+        style="position:fixed; top:0; left:15em; padding:0.5em; background:rgba(255,255,255,0.9);"
     >
         <i class="fas fa-fw fa-upload fa-3x"></i>
-        Share this URL
+        Share the URL in the address bar.
     </div>
 
     <p><label>

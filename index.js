@@ -1,12 +1,10 @@
 
 // Prepare password names
+var initNames = [];
 try {
 	// Names from storage
-	var initNames = JSON.parse(localStorage.teampass_names)
-} catch(err) {
-	// Default names
-	var initNames = ["wifi", "website", "support"]
-}
+	initNames = JSON.parse(localStorage.teampass_names)
+} catch(err) {}
 // Names from URL
 if(location.hash.startsWith("#names=")) {
 	var urlNames = location.hash.substr("#names=".length).split(",")
@@ -14,6 +12,10 @@ if(location.hash.startsWith("#names=")) {
 }
 // Deduplicate names
 initNames = _.uniq(initNames)
+// Default names
+if(initNames.length === 0) {
+	initNames = ["wifi", "website", "support"]
+}
 
 
 var icons = [
@@ -118,18 +120,20 @@ var vue = new Vue({
 			} else if(numEmptyAtTheEnd >= 2) {
 				this.names.pop()
 			}
+		},
 
+		saveToStorage: function() {
 			try {
 				var toStore = _.compact(this.names)
 				localStorage.teampass_names = JSON.stringify(toStore)
 			} catch(err) {}
 		},
 
-		updateUrl: function() {
+		saveToUrl: function() {
 			if(!this.settingsInUrl) return;
 
 			// To URL
-			location.hash = "names=" + this.names.join(",")
+			location.hash = "names=" + _.compact(this.names).join(",")
 		}
 	},
 
@@ -150,11 +154,12 @@ var vue = new Vue({
 
 		names: function(names) {
 			this.updateNames()
-			this.updateUrl()
+			this.saveToStorage()
+			this.saveToUrl()
 		},
 
 		settingsInUrl: function() {
-			this.updateUrl()
+			this.saveToUrl()
 		},
 	}
 })
