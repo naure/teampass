@@ -33,7 +33,7 @@
             <i :class=" checksumName(name) " title="Remember this icon to check that you typed the name correctly."></i>
 
         <span v-if=" seed ">
-            <code>{{ showPass ? getPass(name) : getHidden() }}</code>
+            <code class="indent">{{ showPass ? getPass(name) : getHidden() }}</code>
 
             <button class="copyable" :data-clipboard-text=" getPass(name) ">
                 <i class="fas fa-fw fa-clipboard"></i>
@@ -43,28 +43,31 @@
 
     <p><label>
         <input type="checkbox" v-model="showPass">
-        Show passwords
+        <code>*</code>
+        Show secrets
     </label></p>
 
-    <p><label>
-        <input type="radio" v-model="outputFormat" value="password">
-        As passwords
-    </label></p>
-    <p><label>
-        <input type="radio" v-model="outputFormat" value="pin">
-        As PIN numbers
-    </label></p>
-    <p><label>
-        <input type="radio" v-model="outputFormat" value="hex">
-        As 256 bits hex keys
-    </label></p>
+    <p>Generate:</p>
+    <div class="indent">
+        <p><label>
+            <input type="radio" v-model="outputFormat" value="password">
+            Passwords
+        </label></p>
+        <p><label>
+            <input type="radio" v-model="outputFormat" value="pin">
+            PIN numbers
+        </label></p>
+        <p><label>
+            <input type="radio" v-model="outputFormat" value="hex">
+            256 bits hex keys
+        </label></p>
+    </div>
 
 
-    <div v-if=" settingsInUrl " style="
-        position: fixed;
-        top: 0.5em;
-        left: 15em;
-    ">
+    <!-- Floating arrow pointing at the address bar. -->
+    <div v-if=" settingsInUrl "
+        style="position: fixed; top: 0.5em; left: 15em;"
+    >
         <i class="fas fa-fw fa-upload fa-3x"></i>
         Share this URL
     </div>

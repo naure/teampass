@@ -21,6 +21,8 @@ body {
   code {
     color: #f66;
     font-family: 'Monaco', courier, monospace;
+  }
+  .indent {
     margin: 1em;
   }
 
