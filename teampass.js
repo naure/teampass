@@ -36,7 +36,7 @@ function makeColor(s) {
     return CSS_COLOR_NAMES[ makeCode(s) % MAX_COLORS ]
 }
 
-// 64 characters. 6 bits/char.
+// 64 characters. 6 bits/char. 64 must divide 256 for uniformity.
 CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-'
 
 /** Passwords of 18 characters, or 108 bits. Add "+1" to pass silly password rules. */
@@ -100,10 +100,14 @@ function makeKey(seed, name) {
 
 function makePin(seed, name) {
     var h = sha3_256.array("pin" + seed + name)
-    var digits = _.map(h, function(i){ return i % 10 })
-    var chunks = _.chunk(digits, 6).slice(0, 1)
-    var pins = _.map(chunks, function(chunk){ return chunk.join("") })
-    return pins.join(" ")
+    var digits = []
+    for(var i = 0; digits.length < 6 && i < h.length; i++) {
+        // 250 is a multiple of 10. If the byte is greater, skip it and take the next one.
+        if(h[i] < 250) {
+            digits.push( h[i] % 10 )
+        }
+    }
+    return digits.join("")
 }
 
 function selftest() {
