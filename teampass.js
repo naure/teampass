@@ -90,6 +90,30 @@ function makeSeedAsync(master, progressCb) {
     progressCb(round, null)
 }
 
+function encrypt(keyHex, ivUtf8, clearUtf8) {
+    console.assert(keyHex.length == 64);
+    var keyBytes = aesjs.utils.hex.toBytes(keyHex);
+    var ivBytes = sha3_256.array("iv" + ivUtf8).slice(0, 16);
+    var clearBytes = aesjs.utils.utf8.toBytes(clearUtf8);
+    var paddedBytes = aesjs.padding.pkcs7.pad(clearBytes);
+    var aesCtr = new aesjs.ModeOfOperation.cbc(keyBytes, ivBytes);
+    var cipherBytes = aesCtr.encrypt(paddedBytes);
+    var cipherHex = aesjs.utils.hex.fromBytes(cipherBytes);
+    return cipherHex;
+}
+
+function decrypt(keyHex, ivUtf8, cipherHex) {
+    console.assert(keyHex.length == 64);
+    var keyBytes = aesjs.utils.hex.toBytes(keyHex);
+    var ivBytes = sha3_256.array("iv" + ivUtf8).slice(0, 16);
+    var cipherBytes = aesjs.utils.hex.toBytes(cipherHex);
+    var aesCtr = new aesjs.ModeOfOperation.cbc(keyBytes, ivBytes);
+    var paddedBytes = aesCtr.decrypt(cipherBytes);
+    var clearBytes = aesjs.padding.pkcs7.strip(paddedBytes);
+    var clearUtf8 = aesjs.utils.utf8.fromBytes(clearBytes);
+    return clearUtf8
+}
+
 function makePass(seed, name) {
     return printable( sha3_256.array(seed + name) )
 }
