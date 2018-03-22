@@ -57,7 +57,7 @@ function validate(pass) {
     return true
 }
 
-function makeSeed(master) {
+function makeSeedSha3(master) {
     h = sha3_256.buffer("teampass" + master)
     for(var i=2; i < hashCount; i++) {
         h = sha3_256.buffer(h);    
@@ -65,7 +65,7 @@ function makeSeed(master) {
     return sha3_256(h)
 }
 
-function makeSeedAsync(master, progressCb) {
+function makeSeedSha3Async(master, progressCb) {
     var h = sha3_256.buffer("teampass" + master)  // First hash, converting to buffer.
     var i = 2  // Count the first and last hashings.
     var nextStop = i
@@ -89,6 +89,25 @@ function makeSeedAsync(master, progressCb) {
 
     progressCb(round, null)
 }
+
+function makeSeedArgon2Async(master, progressCb) {
+    argon2.hash({
+        pass: master,
+        salt: 'teampass',
+        time: 1,        // the number of iterations
+        mem: 100*1024,  // used memory, in KiB
+        hashLen: 32,    // desired hash length
+        parallelism: 1, // desired parallelism (will be computed in parallel only for PNaCl)
+        type: argon2.ArgonType.Argon2d, // or argon2.ArgonType.Argon2i
+        distPath: '.'   // asm.js script location, without trailing slash
+    }).then(function(res) {
+        progressCb(null, res.hashHex)
+    })
+}
+
+// Choose method
+var makeSeedAsync = makeSeedArgon2Async;
+
 
 function makePass(seed, name) {
     return printable( sha3_256.array(seed + name) )
@@ -130,9 +149,9 @@ function selftest() {
     }
 
     // Sync
-    cb(null, makeSeed(master))
+    cb(null, makeSeedSha3(master))
     // Async
-    makeSeedAsync(master, cb)
+    makeSeedSha3Async(master, cb)
 }
 
 if(typeof process !== "undefined") {
